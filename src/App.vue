@@ -1,32 +1,45 @@
-<script>
-import {ref, watch, reactive} from 'vue'
+<script setup>
+import {ref, watch, reactive, computed} from 'vue'
+import TodoItem from './components/TodoItem.vue'
 
 const todos = ref([
   {
     title: 'Хлеб',
     id: 1,
-    complited: true
+    completed: true
   },
   {
     title: 'Молоко',
     id: 2,
-    complited: true
+    completed: true
   },
   {
     title: 'Вода',
     id: 3,
-    complited: false
+    completed: false
   },
   {
     title: 'Чипсы',
     id: 4,
-    complited: false
+    completed: false
   }
 ])
 
 const deleteTodo = (id) =>{
   todos.value = todos.value.filter(todo => todo.id !== id)
 }
+
+const doneTodos = computed(() =>{
+  return todos.value.filter(todo => todo.completed)
+})
+
+const newTodos = computed(() =>{
+  return todos.value.filter(todo => !todo.completed)
+})
+
+const allTodosDone = computed(() =>{
+  return newTodos.value.length === 0
+})
 
 watch(todos, () =>{
   console.log(todos);
@@ -39,11 +52,11 @@ watch(todos, () =>{
 
 <template>
   <main>
-    <div v-for="todo in todos" :key="todo.id">
-      <h2>{{ todo.title }}</h2>
-      <input v-model="todo.complited" type="checkbox">
-      <button @click="deleteTodo(todo.id)">Delete</button>
-    </div>
+    <h2 v-if="allTodosDone">Молодец</h2>
+    <h2 v-else>Продолжай работать</h2>
+    <TodoItem v-for="todo in newTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo"/>
+    <hr>
+    <TodoItem v-for="todo in doneTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo"/>
   </main>
 </template>
 
