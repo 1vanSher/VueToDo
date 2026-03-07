@@ -42,6 +42,11 @@ const allTodosDone = computed(() =>{
   return newTodos.value.length === 0
 })
 
+const allTodosNotDone = computed(() =>{
+  console.log(newTodos.value.length === todos.value.length)
+  return newTodos.value.length === todos.value.length
+})
+
 const addToDo = (text) =>{
   todos.value.push({title: text, id: todos.value.length+1, completed: false})
 }
@@ -58,10 +63,12 @@ watch(todos, () =>{
 <template>
   <main>
     <AddTodo @newData="addToDo"/>
-    <h2 v-if="allTodosDone">Молодец</h2>
-    <h2 v-else>Продолжай работать</h2>
+    <h2 v-if="allTodosDone">Все задачи выполнены</h2>
+    <h2 v-else>Tasks to do {{ newTodos.length }}</h2>
     <TodoItem v-for="todo in newTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo"/>
     <hr>
+    <h2 v-if="allTodosNotDone">done <br>Ничего не найдено</h2>
+    <h2 v-else>done - {{ doneTodos.length }}</h2>
     <TodoItem v-for="todo in doneTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo"/>
   </main>
 </template>
