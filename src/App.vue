@@ -1,6 +1,7 @@
 <script setup>
 import {ref, watch, reactive, computed} from 'vue'
 import TodoItem from './components/TodoItem.vue'
+import AddTodo from './components/addTodo.vue'
 
 const todos = ref([
   {
@@ -41,6 +42,10 @@ const allTodosDone = computed(() =>{
   return newTodos.value.length === 0
 })
 
+const addToDo = (text) =>{
+  todos.value.push({title: text, id: todos.value.length+1, completed: false})
+}
+
 watch(todos, () =>{
   console.log(todos);
 },
@@ -52,6 +57,7 @@ watch(todos, () =>{
 
 <template>
   <main>
+    <AddTodo @newData="addToDo"/>
     <h2 v-if="allTodosDone">Молодец</h2>
     <h2 v-else>Продолжай работать</h2>
     <TodoItem v-for="todo in newTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo"/>
