@@ -1,6 +1,6 @@
 <script setup>
-import IconDocumentation from './icons/IconDocumentation.vue'
-import IconEcosystem from './icons/IconEcosystem.vue'
+import IconDelete from './icons/IconDelete.vue'
+import IconCheck from './icons/IconCheck.vue'
 const props = defineProps({
     todo: {
         type: Object,
@@ -21,10 +21,10 @@ const onTodoDelete = () =>{
         <label class="custom-checkbox">
             <input class="hidden-checkbox" v-model="todo.completed"   type="checkbox" >
             <span class="checkbox-icon">
-                <IconEcosystem v-if="todo.completed" class="check-icon" />
+                <IconCheck v-if="todo.completed" class="check-icon" />
             </span>
         </label>
-        <button @click="onTodoDelete"><IconDocumentation/></button>
+        <button @click="onTodoDelete"><IconDelete/></button>
       </div>
     </div>
 </template>
@@ -42,6 +42,9 @@ const onTodoDelete = () =>{
         color: #9E78CF;
         font-size: 12px;
     }
+    .item:last-child{
+        margin-bottom: 0;
+    }
     div{
         display: flex;
         justify-content: center;
@@ -52,6 +55,7 @@ const onTodoDelete = () =>{
         height: 30px;
         background: transparent; 
         border: none;  
+        cursor: pointer;
     }
     .custom-checkbox {
     display: flex;
@@ -60,6 +64,7 @@ const onTodoDelete = () =>{
     cursor: pointer;
     width: 20px;
     height: 20px;
+    margin-bottom: 3px;
     }
     .hidden-checkbox {
         position: absolute;

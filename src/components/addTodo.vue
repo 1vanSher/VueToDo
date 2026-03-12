@@ -1,20 +1,20 @@
 <script setup>
 import {ref} from 'vue'
-import IconCommunity from './icons/IconCommunity.vue'
+import IconPlus from './icons/IconPlus.vue'
 
 const inputValue = ref('')
 
-const emits = defineEmits(['newData'])
+const emits = defineEmits(['onAddButtonClick'])
 
 const addToDo = () =>{
-    emits('newData', inputValue.value)
+    emits('onAddButtonClick', inputValue.value)
     inputValue.value = ''
 }
 </script>
 <template>
     <div>
         <input v-model="inputValue" type="text" placeholder="Add a new task">
-        <button @click="addToDo"><IconCommunity/></button>
+        <button @click="addToDo"><IconPlus/></button>
     </div>
 </template>
 
@@ -40,5 +40,6 @@ const addToDo = () =>{
         border-radius: 10px;
         border: none;
         background-color: #9E78CF;
+        cursor: pointer;
     }
 </style>

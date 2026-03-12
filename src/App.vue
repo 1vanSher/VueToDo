@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch, reactive, computed} from 'vue'
 import TodoItem from './components/TodoItem.vue'
-import AddTodo from './components/addTodo.vue'
+import AddTodo from './components/AddTodo.vue'
 
 const todos = ref([
   {
@@ -46,6 +46,14 @@ const allTodosNotDone = computed(() =>{
   return newTodos.value.length === todos.value.length
 })
 
+const headerTitleDone = computed(() =>{
+  return allTodosDone.value ? 'Все задачи выполнены' : `Tasks to do ${newTodos.value.length}`
+})
+
+const headerTitleNotDone = computed(() => {
+  return allTodosNotDone.value ? `Done
+Ничего не найдено...` : `Done - ${doneTodos.value.length}`
+})
 const addToDo = (text) =>{
   if(text === ''){
     return
@@ -53,23 +61,21 @@ const addToDo = (text) =>{
   todos.value.push({title: text, id: todos.value.length+1, completed: false})
 }
 
-watch(todos, () =>{
-  console.log(todos);
-},
-{
-  deep:true
-}
-)
+// watch(todos, () =>{
+//   console.log(todos);
+// },
+// {
+//   deep:true
+// }
+// )
 </script>
 
 <template>
   <main>
-    <AddTodo @newData="addToDo"/>
-    <h2 v-if="allTodosDone">Все задачи выполнены</h2>
-    <h2 v-else>Tasks to do {{ newTodos.length }}</h2>
+    <AddTodo @onAddButtonClick="addToDo"/>
+    <h2>{{ headerTitleDone }}</h2>
     <TodoItem v-for="todo in newTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo"/>
-    <h2 v-if="allTodosNotDone">Done <br>Ничего не найдено...</h2>
-    <h2 v-else>Done - {{ doneTodos.length }}</h2>
+    <h2 style="white-space: pre-wrap">{{ headerTitleNotDone }}</h2>
     <TodoItem v-for="todo in doneTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo"/>
   </main>
 </template>
