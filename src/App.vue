@@ -60,14 +60,6 @@ const addToDo = (text) =>{
   }
   todos.value.push({title: text, id: todos.value.length+1, completed: false})
 }
-
-// watch(todos, () =>{
-//   console.log(todos);
-// },
-// {
-//   deep:true
-// }
-// )
 </script>
 
 <template>
