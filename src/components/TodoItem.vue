@@ -8,10 +8,14 @@ const props = defineProps({
     }
 }) 
 
-const emits = defineEmits(['deleteTodo'])
+const emits = defineEmits(['deleteTodo', 'navigateTodo'])
 
 const onTodoDelete = () =>{
     emits('deleteTodo', props.todo.id)
+}
+
+const onTodoNavigate = () =>{
+    emits('navigateTodo', props.todo.id)
 }
 </script>
 <template>
@@ -26,7 +30,7 @@ const onTodoDelete = () =>{
         </label>
         <button @click="onTodoDelete"><IconDelete/></button>
       </div>
-    </div>
+    </div @click="onTodoNavigate">
 </template>
 <style scoped>
     .item{
