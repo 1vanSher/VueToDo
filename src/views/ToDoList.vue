@@ -1,31 +1,11 @@
 <script setup>
-import {ref, reactive, computed} from 'vue'
+import {ref, reactive, computed, onMounted} from 'vue'
 import TodoItem from '@/components/TodoItem.vue'
 import AddTodo from '@/components/AddTodo.vue'
 import { useRouter } from 'vue-router'
+import { getTodos } from '@/api/todo/getTodos'
 
-const todos = ref([
-  {
-    title: 'Купить хлеб и изучить Vue.js',
-    id: 1,
-    completed: true
-  },
-  {
-    title: 'Молоко',
-    id: 2,
-    completed: true
-  },
-  {
-    title: 'Вода',
-    id: 3,
-    completed: false
-  },
-  {
-    title: 'Чипсы',
-    id: 4,
-    completed: false
-  }
-])
+const todos = ref([])
 
 const deleteTodo = (id) =>{
   todos.value = todos.value.filter(todo => todo.id !== id)
@@ -61,12 +41,22 @@ const headerTitleNotDone = computed(() => {
   return allTodosNotDone.value ? `Done
 Ничего не найдено...` : `Done - ${doneTodos.value.length}`
 })
+
 const addToDo = (text) =>{
   if(text === ''){
     return
   }
   todos.value.push({title: text, id: todos.value.length+1, completed: false})
 }
+
+onMounted(async() =>{
+  const rawTodos = await getTodos()
+
+  todos.value = rawTodos.map((todo) =>({
+    ...todo,
+    completed: false
+  }))
+})
 </script>
 
 <template>

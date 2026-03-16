@@ -19,8 +19,8 @@ const onTodoNavigate = () =>{
 }
 </script>
 <template>
-    <div class="item">
-      <h2 :class="{ completed: todo.completed }">{{ todo.title }}</h2>
+    <div class="item" >
+      <h2 :class="{ completed: todo.completed }" @click="onTodoNavigate">{{ todo.title }}</h2>
       <div>
         <label class="custom-checkbox">
             <input class="hidden-checkbox" v-model="todo.completed"   type="checkbox" >
@@ -30,7 +30,7 @@ const onTodoNavigate = () =>{
         </label>
         <button @click="onTodoDelete"><IconDelete/></button>
       </div>
-    </div @click="onTodoNavigate">
+    </div>
 </template>
 <style scoped>
     .item{
@@ -53,6 +53,9 @@ const onTodoNavigate = () =>{
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    h2{
+        cursor: pointer;
     }
     button{
         width: 30px;
