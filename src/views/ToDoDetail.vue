@@ -10,7 +10,6 @@ const todo = reactive({})
 onMounted(async () =>{
     const newTodo = await getTodo(route.params.id)
     Object.assign(todo, newTodo)
-    console.log(todo.completed)
 })
 
 const statusText = computed(() => {
