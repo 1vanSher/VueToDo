@@ -8,15 +8,19 @@ const props = defineProps({
     }
 }) 
 
-const emits = defineEmits(['deleteTodo'])
+const emits = defineEmits(['deleteTodo', 'navigateTodo'])
 
 const onTodoDelete = () =>{
     emits('deleteTodo', props.todo.id)
 }
+
+const onTodoNavigate = () =>{
+    emits('navigateTodo', props.todo.id)
+}
 </script>
 <template>
-    <div class="item">
-      <h2 :class="{ completed: todo.completed }">{{ todo.title }}</h2>
+    <div class="item" >
+      <h2 :class="{ completed: todo.completed }" @click="onTodoNavigate">{{ todo.title }}</h2>
       <div>
         <label class="custom-checkbox">
             <input class="hidden-checkbox" v-model="todo.completed"   type="checkbox" >
@@ -49,6 +53,9 @@ const onTodoDelete = () =>{
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    h2{
+        cursor: pointer;
     }
     button{
         width: 30px;
