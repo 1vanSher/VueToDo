@@ -4,6 +4,8 @@ import TodoItem from '@/components/TodoItem.vue'
 import AddTodo from '@/components/AddTodo.vue'
 import { useRouter } from 'vue-router'
 import { getTodos } from '@/api/todo/getTodos'
+import { useBreakpoint } from '@/composables/useBreakpoint'
+
 
 const todos = ref([])
 
@@ -57,16 +59,21 @@ onMounted(async() =>{
     completed: false
   }))
 })
+
+const { isWider } = useBreakpoint(1024)
 </script>
 
 <template>
-  <div>
+  <div v-if="isWider">
     <AddTodo @onAddButtonClick="addToDo"/>
     <h2>{{ headerTitleDone }}</h2>
     <TodoItem v-for="todo in newTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo" @navigateTodo="navigateTodo"/>
     <h2 style="white-space: pre-wrap">{{ headerTitleNotDone }}</h2>
     <TodoItem v-for="todo in doneTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo" @navigateTodo="navigateTodo"/>
   </div>
+  <p v-else class="too-small">
+    Sorry, too small
+  </p>
 </template>
 
 <style scoped>
@@ -82,5 +89,9 @@ onMounted(async() =>{
   h2{
     margin-top: 60px;
     margin-bottom: 15px;
+  }
+  .too-small {
+  color: #888;
+  font-size: 18px;
   }
 </style>
