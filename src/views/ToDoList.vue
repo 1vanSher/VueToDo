@@ -3,11 +3,11 @@ import {ref, reactive, computed, onMounted} from 'vue'
 import TodoItem from '@/components/TodoItem.vue'
 import AddTodo from '@/components/AddTodo.vue'
 import { useRouter } from 'vue-router'
-import { getTodos } from '@/api/todo/getTodos'
 import { useBreakpoint } from '@/composables/useBreakpoint'
+import { useTodoStore } from '@/stores/todo'
+import { storeToRefs } from 'pinia'
 
 
-const todos = ref([])
 
 const deleteTodo = (id) =>{
   todos.value = todos.value.filter(todo => todo.id !== id)
@@ -51,13 +51,10 @@ const addToDo = (text) =>{
   todos.value.push({title: text, id: todos.value.length+1, completed: false})
 }
 
-onMounted(async() =>{
-  const rawTodos = await getTodos()
-
-  todos.value = rawTodos.map((todo) =>({
-    ...todo,
-    completed: false
-  }))
+const store = useTodoStore()
+const {todos} = storeToRefs(store)
+onMounted(() =>{
+  store.fetchTodos()
 })
 
 const { isWider } = useBreakpoint(1024)

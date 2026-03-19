@@ -2,14 +2,15 @@
 import { getTodo } from '@/api/todo/getTodo';
 import { onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { useTodoStore } from '@/stores/todo';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute()
+const store = useTodoStore()
+const {todo} = storeToRefs(store)
 
-const todo = reactive({})
-
-onMounted(async () =>{
-    const newTodo = await getTodo(route.params.id)
-    Object.assign(todo, newTodo)
+onMounted(() =>{
+    store.fetchTodo(route.params.id)
 })
 
 const statusText = computed(() => {
@@ -18,11 +19,14 @@ const statusText = computed(() => {
 
 </script>
 <template>
-    <div>
+    <div v-if="todo">
         <h2>Задача:</h2>
         <p>{{ todo.title }}</p>
         <h2>Статус:</h2>
         <p :class="{ completed: todo.completed }">{{ statusText }}</p>
+    </div>
+    <div v-else>
+        Загрузка
     </div>
 </template>
 <style scoped> 
