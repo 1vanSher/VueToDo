@@ -2,71 +2,34 @@
 import {ref, reactive, computed, onMounted} from 'vue'
 import TodoItem from '@/components/TodoItem.vue'
 import AddTodo from '@/components/AddTodo.vue'
-import { useRouter } from 'vue-router'
-import { getTodos } from '@/api/todo/getTodos'
+import { useBreakpoint } from '@/composables/useBreakpoint'
+import { useTodosStore } from '@/stores/todos'
+import { storeToRefs } from 'pinia'
 
-const todos = ref([])
+const store = useTodosStore()
 
-const deleteTodo = (id) =>{
-  todos.value = todos.value.filter(todo => todo.id !== id)
-}
+const {deleteTodo, navigateTodo, addToDo} = store
+const {todos, doneTodos, newTodos, headerTitleDone, headerTitleNotDone} = storeToRefs(store)
 
-const router = useRouter()
-
-const navigateTodo = (id) =>{
-  router.push({path: `/todo/${id}`})
-}
-
-const doneTodos = computed(() =>{
-  return todos.value.filter(todo => todo.completed)
+onMounted(() =>{
+  store.fetchTodos()
 })
 
-const newTodos = computed(() =>{
-  return todos.value.filter(todo => !todo.completed)
-})
+const { isWider } = useBreakpoint(1024)
 
-const allTodosDone = computed(() =>{
-  return newTodos.value.length === 0
-})
-
-const allTodosNotDone = computed(() =>{
-  return newTodos.value.length === todos.value.length
-})
-
-const headerTitleDone = computed(() =>{
-  return allTodosDone.value ? 'Все задачи выполнены' : `Tasks to do ${newTodos.value.length}`
-})
-
-const headerTitleNotDone = computed(() => {
-  return allTodosNotDone.value ? `Done
-Ничего не найдено...` : `Done - ${doneTodos.value.length}`
-})
-
-const addToDo = (text) =>{
-  if(text === ''){
-    return
-  }
-  todos.value.push({title: text, id: todos.value.length+1, completed: false})
-}
-
-onMounted(async() =>{
-  const rawTodos = await getTodos()
-
-  todos.value = rawTodos.map((todo) =>({
-    ...todo,
-    completed: false
-  }))
-})
 </script>
 
 <template>
-  <div>
+  <div v-if="isWider">
     <AddTodo @onAddButtonClick="addToDo"/>
     <h2>{{ headerTitleDone }}</h2>
     <TodoItem v-for="todo in newTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo" @navigateTodo="navigateTodo"/>
     <h2 style="white-space: pre-wrap">{{ headerTitleNotDone }}</h2>
     <TodoItem v-for="todo in doneTodos" :key="todo.id" :todo="todo" @deleteTodo="deleteTodo" @navigateTodo="navigateTodo"/>
   </div>
+  <p v-else class="too-small">
+    Sorry, too small
+  </p>
 </template>
 
 <style scoped>
@@ -82,5 +45,9 @@ onMounted(async() =>{
   h2{
     margin-top: 60px;
     margin-bottom: 15px;
+  }
+  .too-small {
+  color: #888;
+  font-size: 18px;
   }
 </style>
