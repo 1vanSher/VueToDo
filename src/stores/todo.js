@@ -1,24 +1,19 @@
 import { defineStore } from "pinia";
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { getTodo } from '@/api/todo/getTodo'
-import { getTodos } from '@/api/todo/getTodos'
 
 export const useTodoStore = defineStore('todo', () =>{
-    const todos = ref([])
     const todo = ref(null)
-
-    async function fetchTodos() {
-        const rawTodos = await getTodos()
-            todos.value = rawTodos.map((todo) => ({
-            ...todo,
-            completed: false
-        }))
-    }
-
+    //API
     async function fetchTodo(id) {
         const data = await getTodo(id)
         todo.value = data
     }
 
-    return {todos, todo, fetchTodos, fetchTodo }
+    //ACTIONS
+    const statusText = computed(() => {
+        return todo.completed ? 'Выполнено ✓' : 'Не выполнено ✗'
+    })  
+
+    return {todo, fetchTodo, statusText }
 })

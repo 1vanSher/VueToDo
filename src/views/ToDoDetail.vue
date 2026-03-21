@@ -1,20 +1,17 @@
 <script setup>
-import { getTodo } from '@/api/todo/getTodo';
-import { onMounted, reactive, computed } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTodoStore } from '@/stores/todo';
 import { storeToRefs } from 'pinia';
 
 const route = useRoute()
 const store = useTodoStore()
+
+const {statusText} = store
 const {todo} = storeToRefs(store)
 
 onMounted(() =>{
     store.fetchTodo(route.params.id)
-})
-
-const statusText = computed(() => {
-    return todo.completed ? 'Выполнено ✓' : 'Не выполнено ✗'
 })
 
 </script>

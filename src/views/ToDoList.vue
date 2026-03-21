@@ -2,62 +2,21 @@
 import {ref, reactive, computed, onMounted} from 'vue'
 import TodoItem from '@/components/TodoItem.vue'
 import AddTodo from '@/components/AddTodo.vue'
-import { useRouter } from 'vue-router'
 import { useBreakpoint } from '@/composables/useBreakpoint'
-import { useTodoStore } from '@/stores/todo'
+import { useTodosStore } from '@/stores/todos'
 import { storeToRefs } from 'pinia'
 
+const store = useTodosStore()
 
+const {deleteTodo, navigateTodo, addToDo} = store
+const {todos, doneTodos, newTodos, headerTitleDone, headerTitleNotDone} = storeToRefs(store)
 
-const deleteTodo = (id) =>{
-  todos.value = todos.value.filter(todo => todo.id !== id)
-}
-
-const router = useRouter()
-
-const navigateTodo = (id) =>{
-  router.push({path: `/todo/${id}`})
-}
-
-const doneTodos = computed(() =>{
-  return todos.value.filter(todo => todo.completed)
-})
-
-const newTodos = computed(() =>{
-  return todos.value.filter(todo => !todo.completed)
-})
-
-const allTodosDone = computed(() =>{
-  return newTodos.value.length === 0
-})
-
-const allTodosNotDone = computed(() =>{
-  return newTodos.value.length === todos.value.length
-})
-
-const headerTitleDone = computed(() =>{
-  return allTodosDone.value ? 'Все задачи выполнены' : `Tasks to do ${newTodos.value.length}`
-})
-
-const headerTitleNotDone = computed(() => {
-  return allTodosNotDone.value ? `Done
-Ничего не найдено...` : `Done - ${doneTodos.value.length}`
-})
-
-const addToDo = (text) =>{
-  if(text === ''){
-    return
-  }
-  todos.value.push({title: text, id: todos.value.length+1, completed: false})
-}
-
-const store = useTodoStore()
-const {todos} = storeToRefs(store)
 onMounted(() =>{
   store.fetchTodos()
 })
 
 const { isWider } = useBreakpoint(1024)
+
 </script>
 
 <template>
