@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import {ref} from 'vue'
 import IconPlus from './icons/IconPlus.vue'
 
-const inputValue = ref('')
+const inputValue = ref<string>('')
 
-const emits = defineEmits(['onAddButtonClick'])
+const emits = defineEmits<{onAddButtonClick: [value: string]}>()
 
 const addToDo = () =>{
     emits('onAddButtonClick', inputValue.value)
