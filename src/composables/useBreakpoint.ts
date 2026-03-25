@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-export const useBreakpoint = (breakpoint) =>{
+export const useBreakpoint = (breakpoint: number) =>{
   const isWider = ref(false)
 
   function update() {

@@ -1,14 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import IconDelete from './icons/IconDelete.vue'
 import IconCheck from './icons/IconCheck.vue'
-const props = defineProps({
-    todo: {
-        type: Object,
-        required: true
-    }
-}) 
+import type { Todo } from '@/types/todo'
 
-const emits = defineEmits(['deleteTodo', 'navigateTodo'])
+const props = defineProps<{todo: Todo}>() 
+
+const emits = defineEmits<{
+    deleteTodo: [id:number]
+    navigateTodo: [id:number]
+}>()
 
 const onTodoDelete = () =>{
     emits('deleteTodo', props.todo.id)

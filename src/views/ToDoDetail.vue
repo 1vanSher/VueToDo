@@ -11,7 +11,7 @@ const {statusText} = store
 const {todo} = storeToRefs(store)
 
 onMounted(() =>{
-    store.fetchTodo(route.params.id)
+    store.fetchTodo(Number(route.params.id))
 })
 
 </script>

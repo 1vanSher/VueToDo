@@ -2,14 +2,15 @@ import { defineStore } from "pinia";
 import { useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
 import { getTodos } from '@/api/todo/getTodos'
+import type { Todo } from '@/types/todo'
 
 export const useTodosStore = defineStore('todos', () =>{
 
-    const todos = ref([])
+    const todos = ref<Todo[]>([])
     const router = useRouter()
     //API
     async function fetchTodos() {
-        const rawTodos = await getTodos()
+        const rawTodos: Todo[] = await getTodos()
             todos.value = rawTodos.map((todo) => ({
             ...todo,
             completed: false
@@ -17,15 +18,15 @@ export const useTodosStore = defineStore('todos', () =>{
     }
 
     //ACTIONS
-    const deleteTodo = (id) =>{
+    const deleteTodo = (id: number) =>{
         todos.value = todos.value.filter(todo => todo.id !== id)
     }
 
-    const navigateTodo = (id) =>{
+    const navigateTodo = (id: number) =>{
         router.push({path: `/todo/${id}`})
     }
 
-    const addToDo = (text) =>{
+    const addToDo = (text: string) =>{
         if(text === ''){
             return
         }
