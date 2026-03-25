@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import IconPlus from './icons/IconPlus.vue'
 
-const inputValue = ref<string>('')
+const inputValue = ref('')
 
 const emits = defineEmits<{onAddButtonClick: [value: string]}>()
 

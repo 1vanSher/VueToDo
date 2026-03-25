@@ -1,7 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 export const useBreakpoint = (breakpoint: number) =>{
-  const isWider = ref<Boolean>(false)
+  const isWider = ref(false)
 
   function update() {
     isWider.value = window.innerWidth > breakpoint

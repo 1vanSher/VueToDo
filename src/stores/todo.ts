@@ -12,7 +12,7 @@ export const useTodoStore = defineStore('todo', () =>{
     }
 
     //ACTIONS
-    const statusText = computed<string>(() => {
+    const statusText = computed(() => {
         return todo.value.completed ? 'Выполнено ✓' : 'Не выполнено ✗'
     })  
 

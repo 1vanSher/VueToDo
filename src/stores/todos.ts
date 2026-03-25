@@ -34,27 +34,27 @@ export const useTodosStore = defineStore('todos', () =>{
     }
 
     //COMPUTED
-    const doneTodos = computed<Todo[]>(() =>{
+    const doneTodos = computed(() =>{
         return todos.value.filter(todo => todo.completed)
     })
 
-    const newTodos = computed<Todo[]>(() =>{
+    const newTodos = computed(() =>{
         return todos.value.filter(todo => !todo.completed)
     })
 
-    const allTodosDone = computed<Boolean>(() =>{
+    const allTodosDone = computed(() =>{
         return newTodos.value.length === 0
     })
 
-    const allTodosNotDone = computed<Boolean>(() =>{
+    const allTodosNotDone = computed(() =>{
         return newTodos.value.length === todos.value.length
     })
 
-    const headerTitleDone = computed<String>(() =>{
+    const headerTitleDone = computed(() =>{
         return allTodosDone.value ? 'Все задачи выполнены' : `Tasks to do ${newTodos.value.length}`
     })
 
-    const headerTitleNotDone = computed<String>(() => {
+    const headerTitleNotDone = computed(() => {
         return allTodosNotDone.value ? `Done
     Ничего не найдено...` : `Done - ${doneTodos.value.length}`
     })
